@@ -5,6 +5,7 @@ require('dotenv').config();
 
 
 const authRouter = require('./router/authrouter');
+const cronJob = require('./router/CroneRouter');
 
 const app = express();
 
@@ -19,6 +20,7 @@ mongoose.connect(MONGO_URL)
     .catch(err => console.error('Could not connect to MongoDB:', err));
 
 app.use('/api', authRouter)
+app.use('/api', cronJob)
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
