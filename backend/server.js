@@ -6,6 +6,11 @@ require('dotenv').config();
 
 const authRouter = require('./router/authrouter');
 const cronJob = require('./router/CroneRouter');
+const teamRouter = require('./router/teamRouter');
+const eventRouter = require('./router/eventRouter');
+const galleryRouter = require('./router/galleryRouter');
+const projectRouter = require('./router/projectRouter');
+const contactRouter = require('./router/ContactRouter');
 
 const app = express();
 
@@ -21,6 +26,11 @@ mongoose.connect(MONGO_URL)
 
 app.use('/api', authRouter)
 app.use('/api', cronJob)
+app.use('/api', teamRouter)
+app.use('/api', eventRouter)
+app.use('/api', galleryRouter)
+app.use('/api', projectRouter)
+app.use('/api', contactRouter)
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
