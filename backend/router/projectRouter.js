@@ -9,11 +9,11 @@ const {
     deleteProject
 } = require('../controllers/projectController');
 
-router.post('/', upload.array('images', 1), createProject);
-router.get('/', getAllProjects);
-router.get('/:id', getProjectById);
-router.put('/:id', upload.array('images', 1), updateProject);
-router.delete('/:id', deleteProject);
+router.post('/project', upload.array('images', 1), createProject);
+router.get('/project', getAllProjects);
+router.get('/project/:id', getProjectById);
+router.put('/project/:id', upload.array('images', 1), updateProject);
+router.delete('/project/:id', deleteProject);
 
 module.exports = router;
 

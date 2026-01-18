@@ -3,8 +3,8 @@ const router = express.Router();
 
 const {createContact, getAllContacts} = require('../controllers/contactController');
 
-router.post('/', createContact);
-router.get('/', getAllContacts);
+router.post('/contact', createContact);
+router.get('/contact', getAllContacts);
 
 
 module.exports = router;

@@ -9,10 +9,10 @@ const {
     deleteGallery
 } = require('../controllers/galleryController');
 
-router.post('/', upload.array('images', 1), createGallery);
-router.get('/', getAllGalleries);
-router.get('/:id', getGalleryById);
-router.put('/:id', upload.array('images', 1), updateGallery);
-router.delete('/:id', deleteGallery);
+router.post('/gallery', upload.array('images', 1), createGallery);
+router.get('/gallery', getAllGalleries);
+router.get('/gallery/:id', getGalleryById);
+router.put('/gallery/:id', upload.array('images', 1), updateGallery);
+router.delete('/gallery/:id', deleteGallery);
 
 module.exports = router;

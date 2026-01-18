@@ -10,10 +10,10 @@ const {
 } = require('../controllers/teamController');
 
 
-router.post('/', upload.array('images', 1), createTeam);
-router.get('/', getAllTeams);
-router.get('/:id', getTeamById);
-router.put('/:id', upload.array('images', 1), updateTeam);
-router.delete('/:id', deleteTeam);
+router.post('/team', upload.array('images', 1), createTeam);
+router.get('/team', getAllTeams);
+router.get('/team/:id', getTeamById);
+router.put('/team/:id', upload.array('images', 1), updateTeam);
+router.delete('/team/:id', deleteTeam);
 
 module.exports = router;
