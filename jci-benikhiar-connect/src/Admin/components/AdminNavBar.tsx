@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { Bell, Search, Settings } from 'lucide-react';
+import { Bell, Search, Settings, LogOut } from 'lucide-react';
+import { useEffect } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -23,9 +24,12 @@ type AdminNavbarProps = {
 
 export default function AdminNavbar({ adminName, notificationsCount = 3 }: AdminNavbarProps) {
   const navigate = useNavigate();
-  const token = Cookies.get('authToken');
-  const decodedToken = jwtDecode(token);
-  
+  useEffect(() => {
+    const decodedToken = jwtDecode(Cookies.get('authToken'));
+    console.log(decodedToken);
+
+  }, []);
+
 
   const handleLogout = () => {
     Cookies.remove('authToken');
@@ -81,6 +85,10 @@ export default function AdminNavbar({ adminName, notificationsCount = 3 }: Admin
               <DropdownMenuItem onClick={() => navigate('/admin/settings')}>
                 <Settings className="mr-2 h-4 w-4" />
                 Paramètres
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Déconnexion
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
