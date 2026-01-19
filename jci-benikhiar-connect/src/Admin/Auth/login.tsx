@@ -6,6 +6,7 @@ import { Eye, EyeOff, Lock, Mail, Shield } from 'lucide-react';
 import axios from 'axios';
 import Cookies  from 'js-cookie'
 
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,7 +32,7 @@ export default function AdminLogin() {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-        const response = await axios.post('http://localhost:3000/api/login', {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
             email: data.email,
             password: data.password,
         }
