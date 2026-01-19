@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Bell, Search, Settings, LogOut } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Logo from '../../assets/logojci.png'
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,13 +23,17 @@ type AdminNavbarProps = {
   notificationsCount?: number;
 };
 
+interface DecodedToken {
+  id: string;
+  username: string;
+  role: string;
+}
+
 export default function AdminNavbar({ adminName, notificationsCount = 3 }: AdminNavbarProps) {
   const navigate = useNavigate();
-  useEffect(() => {
-    const decodedToken = jwtDecode(Cookies.get('authToken'));
-    console.log(decodedToken);
-
-  }, []);
+  const decodedToken = jwtDecode(Cookies.get('authToken')) as DecodedToken;
+  
+  
 
 
   const handleLogout = () => {
@@ -39,15 +44,15 @@ export default function AdminNavbar({ adminName, notificationsCount = 3 }: Admin
   return (
     <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 md:px-6">
-        <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-blue-600 font-bold text-white">
-            J
+        
+          <div className="grid h-16 w-16 place-items-center rounded-xl ">
+            <img src={Logo} alt="Logo" />
           </div>
           <div className="leading-tight">
-            <h1 className="text-sm font-semibold text-slate-900">JCI Admin</h1>
+            <h1 className="text-sm font-semibold text-slate-900">Admin</h1>
             <p className="text-xs text-slate-500">Dashboard</p>
           </div>
-        </div>
+        
 
         <div className="hidden flex-1 md:block">
           <div className="relative max-w-md">
@@ -73,8 +78,8 @@ export default function AdminNavbar({ adminName, notificationsCount = 3 }: Admin
                 </Avatar>
 
                 <div className="hidden text-left md:block">
-                  <p className="text-sm font-medium leading-none">{adminName}</p>
-                  <p className="text-xs text-slate-500">Administrateur</p>
+                  <p className="text-sm font-medium leading-none">{decodedToken?.username}</p>
+                  <p className="text-xs text-slate-500">{decodedToken?.role}</p>
                 </div>
               </Button>
             </DropdownMenuTrigger>
