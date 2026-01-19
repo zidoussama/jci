@@ -1,27 +1,30 @@
 const Team = require('../models/team');
 
 exports.createTeam = async (req, res) => {
-    try {
-        const { name, role, image } = req.body;
+  try {
+    const { name, role } = req.body;
 
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ message: 'At least one image is required' });
-        }
-
-        const imageUrls = req.files.map(file => file.path);
-
-        const team = new Team({
-            name,
-            role,
-            image: imageUrls[0]
-        });
-
-        await team.save();
-        res.status(201).json({ message: 'Team created successfully', team });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+    if (!name || !role) {
+      return res.status(400).json({ message: "name and role are required" });
     }
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "At least one image is required" });
+    }
+
+    const imageUrls = req.files.map((file) => file.path);
+    const team = new Team({
+      name,
+      role,
+      image: imageUrls[0],
+    });
+
+    await team.save();
+    return res.status(201).json({ message: "Team created successfully", team });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", error: err.message });
+  }
 };
 
 exports.getAllTeams = async (req, res) => {
@@ -48,24 +51,27 @@ exports.getTeamById = async (req, res) => {
 };
 
 exports.updateTeam = async (req, res) => {
-    try {
-        const { name, role, image } = req.body;
+  try {
+    const { name, role } = req.body;
 
-        const team = await Team.findById(req.params.id);
-        if (!team) {
-            return res.status(404).json({ message: 'Team not found' });
-        }
-
-        team.name = name;
-        team.role = role;
-        team.image = image;
-
-        await team.save();
-        res.status(200).json({ message: 'Team updated successfully', team });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error', error: err.message });
+    const team = await Team.findById(req.params.id);
+    if (!team) {
+      return res.status(404).json({ message: "Team not found" });
     }
+
+    if (name !== undefined) team.name = name;
+    if (role !== undefined) team.role = role;
+
+    if (req.files && req.files.length > 0) {
+      team.image = req.files[0].path; 
+    }
+
+    await team.save();
+    return res.status(200).json({ message: "Team updated successfully", team });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error", error: err.message });
+  }
 };
 
 exports.deleteTeam = async (req, res) => {
