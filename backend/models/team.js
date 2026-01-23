@@ -6,8 +6,12 @@ const teamSchema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: String,
-        required: true
+        type :String,
+        enum : ['President','Executive Vice President','Vice President','Secretary','Treasurer','User'],
+        default : 'User'
+    },
+    year : {
+        type : Number,
     },
     image: {
         type: String,
@@ -17,4 +21,3 @@ const teamSchema = new mongoose.Schema({
 
 module.exports = mongoose.model('Team', teamSchema);
 
-    
