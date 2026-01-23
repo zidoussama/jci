@@ -18,7 +18,7 @@ export interface GalleryItem {
 
 // ---------------- API URL ----------------
 
-const API_URL = `${import.meta.env.VITE_API_URL}gallery`;
+const API_URL = `${import.meta.env.VITE_API_URL}/gallery`;
 
 // ---------------- HOOK ----------------
 
