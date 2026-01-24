@@ -1,65 +1,57 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-
-// ---------------- TYPES ----------------
-
-export interface GalleryTitle {
-  fr: string;
-  ar: string;
-  en: string;
-}
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export interface GalleryItem {
-  id: number;
+  id: string;
   src: string;
   category: string;
-  title: GalleryTitle;
+  title: {
+    fr: string;
+    en: string;
+    ar: string;
+  };
 }
-
-// ---------------- API URL ----------------
-
-const API_URL = `${import.meta.env.VITE_API_URL}/gallery`;
-
-// ---------------- HOOK ----------------
 
 export const useGallery = () => {
 
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchGallery = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await axios.get<GalleryItem[]>(API_URL, {
-        withCredentials: true,
-      });
-
-      setGallery(response.data);
-
-    } catch (err: any) {
-
-      setError(
-        err.response?.data?.message ||
-        err.message ||
-        "Failed to load gallery"
-      );
-
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+
+    const fetchGallery = async () => {
+      try {
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/gallery`
+        );
+
+        // 👉 Mapping frontend (SANS toucher backend)
+        const formatted = response.data.map((item: any) => ({
+          id: item._id,
+          src: item.image,          // Cloudinary URL
+          category: item.type,      // event, project...
+          title: {
+            fr: item.title,
+            en: item.title,
+            ar: item.title
+          }
+        }));
+
+        setGallery(formatted);
+
+      } catch (err: any) {
+        setError('Failed to load gallery');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchGallery();
+
   }, []);
 
-  return {
-    gallery,
-    loading,
-    error,
-    refetch: fetchGallery,
-  };
+  return { gallery, loading, error };
 };
