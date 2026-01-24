@@ -4,11 +4,11 @@ import { useLanguage } from '@/i18n/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useEvents, EventItem } from '@/hooks/events/useEvents';
+import { useEvent, EventItem } from '@/hooks/events/useEvent';
 
 const EventsPage: React.FC = () => {
   const { t, language } = useLanguage();
-  const { events, loading, error } = useEvents();
+  const { events, loading, error } = useEvent();
   const [activeTab, setActiveTab] = useState('upcoming');
 
   const upcomingEvents = events.filter(e => e.isUpcoming);

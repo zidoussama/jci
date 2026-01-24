@@ -30,7 +30,7 @@ export interface EventItem {
   isUpcoming: boolean;
 }
 
-export const useEvents = () => {
+export const useEvent = () => {
 
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ export const useEvents = () => {
       try {
 
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/events`
+          `${import.meta.env.VITE_API_URL}/event`
         );
 
         // 👉 Mapping frontend (SANS toucher backend)
