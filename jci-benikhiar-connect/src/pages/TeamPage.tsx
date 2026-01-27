@@ -2,6 +2,7 @@ import React from 'react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTeam, TeamMember } from '@/hooks/team/useTeam';
 import president from "@/assets/equipe/p1.jpg";
 import vp from "@/assets/equipe/vpfd.png";
 import sc from "@/assets/equipe/Secrétaire Général.png";
@@ -72,13 +73,15 @@ const testimonials = [
 
 const TeamPage: React.FC = () => {
   const { t, language } = useLanguage();
+  const { team, loading, error } = useTeam();
 
   const roleLabels: Record<string, Record<string, string>> = {
-    president: { fr: 'Président(e)', ar: 'الرئيس', en: 'President' },
-    VPFD: { fr: 'Vice Président Chargé des Formations et développements', ar: 'نائب الرئيس المسؤول عن التدريب والتطوير', en: 'Vice President in charge of Training and Development' },
-    secretary: { fr: 'Secrétaire Général(e)', ar: 'الأمين العام', en: 'Secretary General' },
-    treasurer: { fr: 'Trésorier(ère)', ar: 'أمين المال', en: 'Treasurer' },
-    conseillerjuridique: { fr: 'Conseiller Juridique', ar: 'المستشار القانوني', en: 'Legal Advisor' },
+    'President': { fr: 'Président(e)', ar: 'الرئيس', en: 'President' },
+    'Executive Vice President': { fr: 'Vice Président Exécutif', ar: 'نائب الرئيس التنفيذي', en: 'Executive Vice President' },
+    'Vice President': { fr: 'Vice Président', ar: 'نائب الرئيس', en: 'Vice President' },
+    'Secretary': { fr: 'Secrétaire Général(e)', ar: 'الأمين العام', en: 'Secretary General' },
+    'Treasurer': { fr: 'Trésorier(ère)', ar: 'أمين المال', en: 'Treasurer' },
+    'User': { fr: 'Membre', ar: 'عضو', en: 'Member' },
   };
 
   return (
@@ -104,6 +107,17 @@ const TeamPage: React.FC = () => {
       {/* Team Section */}
       <section className="section-padding">
         <div className="container-custom">
+
+          {/* STATES */}
+          {loading && (
+            <p className="text-center text-lg">Loading team...</p>
+          )}
+
+          {error && (
+            <p className="text-center text-red-500">{error}</p>
+          )}
+
+          {!loading && !error && (
           <Tabs defaultValue="current" className="w-full">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-10">
               <TabsTrigger value="current" className="text-base">
@@ -116,7 +130,7 @@ const TeamPage: React.FC = () => {
             
             <TabsContent value="current">
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {boardMembers.map((member, index) => (
+                {team.map((member, index) => (
                   <Card 
                     key={member.id} 
                     className="overflow-hidden group hover:shadow-xl transition-all text-center animate-fade-in"
@@ -125,18 +139,18 @@ const TeamPage: React.FC = () => {
                     <div className="relative h-64 overflow-hidden">
                       <img 
                         src={member.image} 
-                        alt={member.name[language]}
+                        alt={member.name?.[language] || member.name?.fr || 'Team member'}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4 text-white">
                         
-                        <h3 className="font-bold text-lg">{member.name[language]}</h3>
+                        <h3 className="font-bold text-lg">{member.name?.[language] || member.name?.fr || 'N/A'}</h3>
                       </div>
                     </div>
                     <CardContent className="p-4">
                       <p className="text-xs bg-accent text-accent-foreground px-2 py-1 rounded-full inline-block mb-2">
-                          {roleLabels[member.role][language]}
+                          {roleLabels[member.role]?.[language] || member.role}
                         </p>
                     </CardContent>
                   </Card>
@@ -169,6 +183,7 @@ const TeamPage: React.FC = () => {
               </div>
             </TabsContent>
           </Tabs>
+          )}
         </div>
       </section>
 
