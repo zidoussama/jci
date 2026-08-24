@@ -14,7 +14,7 @@ const contactRouter = require('./router/ContactRouter');
 
 const app = express();
 
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongo:27017/jci';
 
 // Middleware
 app.use(cors());

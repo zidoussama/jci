@@ -94,3 +94,28 @@ exports.deleteProject = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+exports.Createp1 = async (req, res) => {
+  try {
+    const { title, description, year, type } = req.body;
+    const id = req.params.id;
+
+    if (!title || !description || !year || !type) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const project = new Project({
+      title,
+      description,
+      year,
+      type,
+      id,
+    });
+
+    await project.save();
+    return res.status(201).json(project);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

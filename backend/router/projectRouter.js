@@ -14,6 +14,7 @@ router.get('/project', getAllProjects);
 router.get('/project/:id', getProjectById);
 router.put('/project/:id', upload.array('images', 5), updateProject);
 router.delete('/project/:id', deleteProject);
+router.post
 
 module.exports = router;
 
